@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TripSplit — Group Trip Settle-Up</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-icon">↗</span> TripSplit</a>
+    <span class="offline">● Saved on this device</span>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">TRAVEL TOGETHER. SETTLE EASILY.</p>
+        <h1>Every trip, <span>perfectly balanced.</span></h1>
+        <p class="subtitle">Track shared expenses, see who owes whom, and wrap up your trip without awkward calculations.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="mountain m1"></div><div class="mountain m2"></div><div class="road"></div><div class="pin">✦</div></div>
+    </section>
+
+    <section class="trip-heading card">
+      <div>
+        <label for="tripName">TRIP NAME</label>
+        <input id="tripName" class="trip-name" value="Weekend Getaway" maxlength="60" />
+        <p class="muted">Your shared trip wallet</p>
+      </div>
+      <div class="currency-control">
+        <label for="currency">CURRENCY</label>
+        <select id="currency"><option value="₹">INR ₹</option><option value="$">USD $</option><option value="€">EUR €</option><option value="£">GBP £</option></select>
+      </div>
+    </section>
+
+    <section class="summary-grid">
+      <article class="summary-card"><span class="summary-label">TOTAL SPENT</span><strong id="totalSpent">₹0.00</strong><span class="summary-note">All recorded expenses</span></article>
+      <article class="summary-card"><span class="summary-label">PEOPLE</span><strong id="peopleCount">0</strong><span class="summary-note">In your travel group</span></article>
+      <article class="summary-card"><span class="summary-label">EXPENSES</span><strong id="expenseCount">0</strong><span class="summary-note">Shared trip costs</span></article>
+    </section>
+
+    <section class="content-grid">
+      <div class="main-column">
+        <section class="card">
+          <div class="section-title"><div><p class="eyebrow">THE CREW</p><h2>Travel buddies</h2></div><span class="pill" id="memberPill">0 members</span></div>
+          <form id="memberForm" class="inline-form"><input id="memberName" placeholder="Add a name (e.g. Riya)" maxlength="30" required /><button class="btn primary" type="submit">+ Add person</button></form>
+          <div id="membersList" class="members-list"><p class="empty">Add your group members to get started.</p></div>
+        </section>
+
+        <section class="card">
+          <div class="section-title"><div><p class="eyebrow">SHARED COSTS</p><h2>Add an expense</h2></div><span class="icon-bubble">＋</span></div>
+          <form id="expenseForm" class="expense-form">
+            <div class="field"><label for="expenseTitle">WHAT WAS IT FOR?</label><input id="expenseTitle" placeholder="e.g. Dinner, hotel, taxi" maxlength="70" required /></div>
+            <div class="form-row">
+              <div class="field"><label for="expenseAmount">AMOUNT</label><input id="expenseAmount" type="number" min="0.01" step="0.01" placeholder="0.00" required /></div>
+              <div class="field"><label for="paidBy">PAID BY</label><select id="paidBy" required><option value="">Add a person first</option></select></div>
+            </div>
+            <div class="field"><label>WHO SHARES THIS COST?</label><div id="splitMembers" class="split-members"><span class="muted">Add members first.</span></div></div>
+            <button class="btn primary full" type="submit">Add expense <span>→</span></button>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="section-title"><div><p class="eyebrow">TRIP ACTIVITY</p><h2>Recent expenses</h2></div><button id="clearExpenses" class="text-button" type="button">Clear all</button></div>
+          <div id="expensesList" class="expenses-list"><p class="empty">Your expenses will appear here.</p></div>
+        </section>
+      </div>
+
+      <aside class="side-column">
+        <section class="card balances-card">
+          <div class="section-title"><div><p class="eyebrow">THE BIG PICTURE</p><h2>Balances</h2></div><span class="icon-bubble green">↔</span></div>
+          <p class="muted small">Positive means they should receive money. Negative means they owe money.</p>
+          <div id="balancesList" class="balances-list"><p class="empty">Add people and expenses to calculate balances.</p></div>
+        </section>
+        <section class="card settle-card">
+          <p class="eyebrow">LET'S SQUARE UP</p><h2>Suggested settlements</h2>
+          <p class="muted small">The fewest simple payments to settle the group fairly.</p>
+          <div id="settlementsList" class="settlements-list"><p class="empty">Settlements will show up here.</p></div>
+        </section>
+        <section class="tip-card"><div class="tip-icon">✦</div><div><strong>Trip tip</strong><p>Record expenses as you go. TripSplit saves your data in this browser on this device.</p></div></section>
+        <button id="resetTrip" class="btn danger-outline full" type="button">Reset this trip</button>
+      </aside>
+    </section>
+    <footer>Made for better trips, not bigger spreadsheets. <span>TripSplit © 2026</span></footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

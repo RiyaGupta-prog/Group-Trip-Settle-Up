@@ -118,3 +118,69 @@ document.addEventListener('click',e=>{
 $('clearExpenses').addEventListener('click',()=>{if(state.expenses.length && confirm('Delete all expenses? This cannot be undone.')){state.expenses=[];saveState();render();}});
 $('resetTrip').addEventListener('click',()=>{if(confirm('Reset the entire trip, including all members and expenses? This cannot be undone.')){state={...defaultState,members:[],expenses:[]};saveState();render();}});
 render();
+// Download Bill Feature
+const downloadBtn = document.createElement('button');
+downloadBtn.id = 'downloadBill';
+downloadBtn.type = 'button';
+downloadBtn.className = 'btn primary full';
+downloadBtn.textContent = '⬇ Download Bill';
+downloadBtn.style.marginTop = '10px';
+
+$('resetTrip').insertAdjacentElement('beforebegin', downloadBtn);
+
+downloadBtn.addEventListener('click', () => {
+  const balances = calculateBalances();
+  const settlements = getSettlements(balances);
+
+  const rows = [
+    ['TripSplit Bill'],
+    ['Trip Name', state.tripName],
+    ['Date', new Date().toLocaleDateString()],
+    ['Total Spent', money(state.expenses.reduce((sum, e) => sum + e.amount, 0))],
+    [],
+    ['Expense', 'Paid By', 'Amount', 'Split Between']
+  ];
+
+  state.expenses.forEach(e => {
+    const payer = state.members.find(m => m.id === e.paidBy);
+    const names = e.splitIds
+      .map(id => state.members.find(m => m.id === id)?.name)
+      .filter(Boolean).join(', ');
+
+    rows.push([
+      e.title,
+      payer?.name || 'Removed member',
+      money(e.amount),
+      names
+    ]);
+  });
+
+  rows.push([], ['Member Balances'], ['Name', 'Balance']);
+
+  state.members.forEach(m => {
+    rows.push([m.name, money(balances.get(m.id) || 0)]);
+  });
+
+  rows.push([], ['Suggested Settlements'], ['From', 'To', 'Amount']);
+
+  settlements.forEach(s => {
+    rows.push([s.from.name, s.to.name, money(s.amount)]);
+  });
+
+  const csv = rows.map(row =>
+    row.map(value =>
+      '"' + String(value ?? '').replace(/"/g, '""') + '"'
+    ).join(',')
+  ).join('\r\n');
+
+  const blob = new Blob(['\uFEFF' + csv], {
+    type: 'text/csv;charset=utf-8;'
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'TripSplit-Bill.csv';
+  link.click();
+  URL.revokeObjectURL(url);
+});

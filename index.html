@@ -47,6 +47,23 @@
           <form id="memberForm" class="inline-form"><input id="memberName" placeholder="Add a name (e.g. Riya)" maxlength="30" required /><button class="btn primary" type="submit">+ Add person</button></form>
           <div id="membersList" class="members-list"><p class="empty">Add your group members to get started.</p></div>
         </section>
+        
+<div class="field">
+  <label for="splitType">SPLIT TYPE</label>
+  <select id="splitType">
+    <option value="equal">Equal Split</option>
+    <option value="custom">Custom Amount Split</option>
+  </select>
+</div>
+
+<div id="customSplitFields" class="field" style="display:none;">
+  <label>AMOUNT PER PERSON</label>
+  <div id="customSplitInputs"></div>
+  <p class="muted small">
+    Shares ka total expense ke equal hona chahiye.
+  </p>
+</div>
+
 
         <section class="card">
           <div class="section-title"><div><p class="eyebrow">SHARED COSTS</p><h2>Add an expense</h2></div><span class="icon-bubble">＋</span></div>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7f5">
+  <title>TripSplit — Group Trip Settle-Up</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="#">
+      <span class="brand-icon">✈️</span>
+      <span>TripSplit</span>
+    </a>
+
+    <button id="themeToggle" type="button" class="theme-toggle">
+      🌙 Dark mode
+    </button>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">TRAVEL TOGETHER, SETTLE EASILY</p>
+      <h1>Group Trip <span>Settle-Up</span></h1>
+      <p>Track shared expenses and see who owes whom.</p>
+
+      <div class="trip-name-field">
+        <label for="tripName">Trip name</label>
+        <input
+          type="text"
+          id="tripName"
+          value="Weekend Getaway"
+          maxlength="100"
+          placeholder="Enter your trip name"
+        >
+      </div>
+    </section>
+
+    <section class="stats-grid" aria-label="Trip overview">
+      <article class="stat-card">
+        <span class="stat-label">Total spent</span>
+        <strong id="totalSpent">₹0.00</strong>
+      </article>
+
+      <article class="stat-card">
+        <span class="stat-label">Members</span>
+        <strong id="peopleCount">0</strong>
+      </article>
+
+      <article class="stat-card">
+        <span class="stat-label">Expenses</span>
+        <strong id="expenseCount">0</strong>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">YOUR GROUP</p>
+          <h2>Trip members</h2>
+        </div>
+        <span id="memberPill" class="member-pill">0 members</span>
+      </div>
+
+      <form id="memberForm" class="member-form">
+        <div class="field">
+          <label for="memberName">Person's name</label>
+          <input
+            type="text"
+            id="memberName"
+            name="memberName"
+            placeholder="e.g. Riya"
+            maxlength="60"
+            autocomplete="off"
+            required
+          >
+        </div>
+
+        <button type="submit" class="primary-btn">
+          + Add person
+        </button>
+      </form>
+
+      <p id="memberMessage" class="form-message" role="status" hidden></p>
+
+      <div id="membersList" class="members-list">
+        <p class="empty">Add your group members to get started.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">RECORD SPENDING</p>
+          <h2>Add an expense</h2>
+        </div>
+      </div>
+
+      <form id="expenseForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="expenseTitle">Expense name</label>
+            <input
+              type="text"
+              id="expenseTitle"
+              placeholder="e.g. Hotel booking"
+              maxlength="100"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="expenseAmount">Amount</label>
+            <input
+              type="number"
+              id="expenseAmount"
+              placeholder="Enter amount"
+              min="0.01"
+              step="0.01"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="currency">Currency</label>
+            <select id="currency">
+              <option value="₹" selected>₹ INR</option>
+              <option value="$">$ USD</option>
+              <option value="€">€ EUR</option>
+              <option value="£">£ GBP</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="paidBy">Who paid?</label>
+            <select id="paidBy" required>
+              <option value="">Add a person first</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="splitType">Split method</label>
+            <select id="splitType">
+              <option value="equal" selected>Split equally</option>
+              <option value="custom">Custom split</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="split-section">
+          <h3>Split expense between</h3>
+          <p class="muted">Select everyone who should share this expense.</p>
+
+          <div id="splitMembers" class="split-members">
+            <span class="muted">Add members first.</span>
+          </div>
+        </div>
+
+        <div id="customSplitFields" hidden>
+          <h3>Custom shares</h3>
+          <p class="muted">
+            Enter each selected person's share. The total must equal the expense amount.
+          </p>
+
+          <div id="customSplitInputs" class="form-grid"></div>
+        </div>
+
+        <button type="submit" class="primary-btn full-btn">
+          + Add expense
+        </button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">SPENDING HISTORY</p>
+          <h2>Expenses</h2>
+        </div>
+
+        <button id="clearExpenses" type="button" class="secondary-btn">
+          Clear expenses
+        </button>
+      </div>
+
+      <div id="expensesList" class="expenses-list">
+        <p class="empty">Your expenses will appear here.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">WHO OWES WHAT</p>
+          <h2>Member balances</h2>
+        </div>
+      </div>
+
+      <p class="muted">
+        Positive balance means the person should receive money.
+        Negative balance means the person owes money.
+      </p>
+
+      <div id="balancesList" class="balances-list">
+        <p class="empty">Add people and expenses to calculate balances.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">SETTLE UP</p>
+          <h2>Suggested payments</h2>
+        </div>
+      </div>
+
+      <div id="settlementsList" class="settlements-list">
+        <p class="empty">Settlements will show up here.</p>
+      </div>
+    </section>
+
+    <section class="panel summary-panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">THE BIG PICTURE</p>
+          <h2>Trip summary</h2>
+        </div>
+      </div>
+
+      <div class="summary-grid">
+        <article class="summary-card">
+          <span class="stat-label">Average per person</span>
+          <strong id="averagePerPerson">₹0.00</strong>
+        </article>
+
+        <article class="summary-card">
+          <span class="stat-label">Largest expense</span>
+          <strong id="largestExpense">No expenses yet</strong>
+        </article>
+
+        <article class="summary-card">
+          <span class="stat-label">Suggested payments</span>
+          <strong id="settlementCount">0</strong>
+        </article>
+      </div>
+
+      <p id="tripSummaryText" class="summary-text">
+        Add your travel buddies and expenses to build your trip summary.
+      </p>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">KEEP A COPY</p>
+          <h2>Download your bill</h2>
+        </div>
+      </div>
+
+      <p class="muted">
+        Save your expense details, balances and suggested payments.
+      </p>
+
+      <div class="download-actions">
+        <button id="downloadPDF" type="button" class="primary-btn">
+          Download PDF bill
+        </button>
+
+        <button id="downloadCSV" type="button" class="secondary-btn">
+          Download CSV bill
+        </button>
+      </div>
+    </section>
+
+    <section class="reset-section">
+      <button id="resetTrip" type="button" class="danger-btn">
+        Reset entire trip
+      </button>
+      <p class="muted">
+        This removes all members and expenses saved for this trip on this device.
+      </p>
+    </section>
+
+    <footer class="footer">
+      <p>Made for better trips, not complicated calculations. ✈️</p>
+      <p>TripSplit · Group Trip Settle-Up</p>
+    </footer>
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
